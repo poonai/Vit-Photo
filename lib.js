@@ -24,7 +24,7 @@ const getCookie=function (cb) {
                   passwd:'MyWife15Bitch_',
                   vrfcd:captcha
               }).end(function(response){
-                cache.put('mycookie',Serial,2*60*1000);
+                cache.put('mycookie',Serial,1*60*1000);
                  cb(Serial)
             })
     })
