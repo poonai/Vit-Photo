@@ -8,7 +8,7 @@ app.get('/',function (req,res,next) {
     author:'SchoolBoy',
     rep:'https://github.com/sch00lb0y/Vit-Photo',
     twitter:'https://twitter.com/rbalajis25',
-    example:'http://summa.herokuapp.com/14MSE0052 replace the existing regno with your regno'
+    example:'http://summaa.herokuapp.com/14MSE0052 replace the existing regno with your regno'
   })
 })
 app.get('/:regno',viewer)
