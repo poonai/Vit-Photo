@@ -1,0 +1,19 @@
+{
+  "name": "summa-api",
+  "version": "1.0.0",
+  "description": "api server for summa app",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "schoolboy",
+  "license": "ISC",
+  "dependencies": {
+    "cheerio": "^0.20.0",
+    "express": "^4.14.0",
+    "memory-cache": "^0.1.6",
+    "request": "^2.74.0",
+    "tough-cookie": "^2.2.2",
+    "unirest": "^0.5.0"
+  }
+}
