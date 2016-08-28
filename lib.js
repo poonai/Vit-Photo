@@ -3,14 +3,12 @@ var parser=require('./parser.js');
 var cheerio=require('cheerio');
 var request=require('request')
 var CookieJar = unirest.jar(true);
+var mypic=require('fs').createReadStream('./dev.jpg')
 var cache=require('memory-cache')
 process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = '0';
 
 
-var viewer=function (regno,Sres) {
 
-
-}
 const getCookie=function (cb) {
   cachedCookie=cache.get('mycookie')
 
@@ -35,13 +33,22 @@ const getCookie=function (cb) {
   }
 }
 exports.viewer = function (Sreq,Sres) {
-  getCookie(function (Serial) {
-    regno=Sreq.params.regno.toUpperCase()
-    var jar=request.jar();
-    jar.setCookie(request.cookie(Serial),'https://vtop.vit.ac.in/student/view_photo_2.asp?rgno=14MSE0001');
-    request.get({url:'https://vtop.vit.ac.in/student/view_photo_2.asp?rgno='+regno,jar:jar},function (err,res,body) {
-    request.get({url:'https://vtop.vit.ac.in/student/view_photo_2.asp?rgno='+regno,jar:jar}).pipe(Sres)
+  regno=Sreq.params.regno.toUpperCase()
+  if(regno=='14MSE0052'){
+    mypic.pipe(Sres)
+  }else {
+    getCookie(function (Serial) {
+
+
+        var jar=request.jar();
+        jar.setCookie(request.cookie(Serial),'https://vtop.vit.ac.in/student/view_photo_2.asp?rgno=14MSE0001');
+        request.get({url:'https://vtop.vit.ac.in/student/view_photo_2.asp?rgno='+regno,jar:jar},function (err,res,body) {
+        request.get({url:'https://vtop.vit.ac.in/student/view_photo_2.asp?rgno='+regno,jar:jar}).pipe(Sres)
+        })
+
+
     })
-  })
+  }
+
 
 };
