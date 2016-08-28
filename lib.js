@@ -39,13 +39,18 @@ exports.viewer = function (Sreq,Sres) {
   }else {
     getCookie(function (Serial) {
 
-
+         if(Serial.split('=').length==2){
         var jar=request.jar();
         jar.setCookie(request.cookie(Serial),'https://vtop.vit.ac.in/student/view_photo_2.asp?rgno=14MSE0001');
         request.get({url:'https://vtop.vit.ac.in/student/view_photo_2.asp?rgno='+regno,jar:jar},function (err,res,body) {
         request.get({url:'https://vtop.vit.ac.in/student/view_photo_2.asp?rgno='+regno,jar:jar}).pipe(Sres)
         })
-
+}else{
+  res.json({
+    status:false,
+    message:"sorry for inconvenience..pls blame vtop server don't blame me :-("
+  })
+}
 
     })
   }
