@@ -16,7 +16,7 @@ const getCookie=function (cb) {
     unirest.get("https://vtop.vit.ac.in/student/captcha.asp").headers({'User-Agent':'Mozilla/5.0 (X11; Linux x86_64; rv:10.0) Gecko/20150101 Firefox/44.0 (Chrome)'}).end(function(response){
               const key = Object.keys(response.cookies)[0];
               Serial=key+'='+response.cookies[key]
-               if(Serial.split('=')[0]=='ASPSESSIONIDCETSBTSA'){
+
                  var CookieJar = unirest.jar();
                  CookieJar.add(unirest.cookie(Serial),"https://vtop.vit.ac.in/student/stud_login_submit.asp");
               pixMap=parser.getPixelMapFromBuffer(new Buffer(response.body));
@@ -32,9 +32,7 @@ const getCookie=function (cb) {
                  cb(Serial)
                  console.log("no cached");
             })
-          }else {
-            cb('po=po')
-          }
+
     })
   }else {
     cb(cachedCookie)
@@ -47,8 +45,8 @@ exports.viewer = function (Sreq,Sres) {
     mypic.pipe(Sres)
   }else {
     getCookie(function (Serial) {
-
-         if(Serial.split('=')[0]=='ASPSESSIONIDCETSBTSA'){
+                  console.log(Serial);
+         if(Serial!=null){
         var jar=request.jar();
         jar.setCookie(request.cookie(Serial),'https://vtop.vit.ac.in/student/view_photo_2.asp?rgno=14MSE0001');
         request.get({url:'https://vtop.vit.ac.in/student/view_photo_2.asp?rgno='+regno,jar:jar},function (err,res,body) {
