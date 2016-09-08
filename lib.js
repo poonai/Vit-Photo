@@ -22,8 +22,8 @@ const getCookie=function (cb) {
               pixMap=parser.getPixelMapFromBuffer(new Buffer(response.body));
               captcha=parser.getCaptcha(pixMap);
              unirest.post("https://vtop.vit.ac.in/student/stud_login_submit.asp").headers({'User-Agent':'Mozilla/5.0 (X11; Linux x86_64; rv:10.0) Gecko/20150101 Firefox/44.0 (Chrome)'}).jar(CookieJar).form({
-                  regno:'14MSE0052',
-                  passwd:'MyWife15Bitch_',
+                  regno:process.env.REGNO,
+                  passwd:process.env.PASS,
                   vrfcd:captcha
               }).end(function(response){
 
