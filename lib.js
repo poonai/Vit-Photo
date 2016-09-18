@@ -2,9 +2,8 @@ var unirest=require('unirest');
 var parser=require('./parser.js');
 var cheerio=require('cheerio');
 var request=require('request')
-
-var mypic=require('fs').createReadStream('./dev.jpg')
 var cache=require('memory-cache')
+const friends=require('./friends.js')
 process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = '0';
 
 
@@ -41,8 +40,8 @@ const getCookie=function (cb) {
 }
 exports.viewer = function (Sreq,Sres) {
   regno=Sreq.params.regno.toUpperCase()
-  if(regno=='14MSE0052'){
-    mypic.pipe(Sres)
+  if(friends.index(regno)>-1){
+    mypic.pipe(fs.createReadStream(__dirname+'/photos/'+regno+'.jpg'))
   }else {
     getCookie(function (Serial) {
                   console.log(Serial);
