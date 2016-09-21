@@ -6,7 +6,7 @@ var cache=require('memory-cache')
 const friends=require('./friends.js')
 process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = '0';
 
-
+const fs=require('fs')
 
 const getCookie=function (cb) {
   cachedCookie=cache.get('mycookie')
@@ -40,8 +40,8 @@ const getCookie=function (cb) {
 }
 exports.viewer = function (Sreq,Sres) {
   regno=Sreq.params.regno.toUpperCase()
-  if(friends.index(regno)>-1){
-    mypic.pipe(fs.createReadStream(__dirname+'/photos/'+regno+'.jpg'))
+  if(friends.indexOf(regno)>-1){
+    fs.createReadStream(__dirname+'/photos/'+regno+'.jpg').pipe(Sres)
   }else {
     getCookie(function (Serial) {
                   console.log(Serial);
