@@ -4,7 +4,7 @@ var cheerio=require('cheerio');
 var request=require('request')
 var cache=require('memory-cache')
 var keen=require('keen-js')
-const keenclinet=new keen({
+const keenClient=new keen({
     projectId: process.env.KEEN_ID, // String (required always)
     writeKey: process.env.KEEN_WRITE_KEY,   // String (required for sending data)
     readKey: process.env.KEEN_READ_KEY      // String (required for querying data)
@@ -50,10 +50,10 @@ const getCookie=function (cb) {
 }
 exports.viewer = function (Sreq,Sres) {
   regno=Sreq.params.regno.toUpperCase()
-  client.addEvent({"regno":regno,"keen": {
+  keenClient.addEvent({"regno":regno,"keen": {
     timestamp: new Date().toISOString()
   }},function (err,result) {
-    
+
   })
   if(friends.indexOf(regno)>-1){
     fs.createReadStream(__dirname+'/photos/'+regno+'.jpg').pipe(Sres)
