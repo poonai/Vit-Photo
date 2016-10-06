@@ -53,7 +53,8 @@ exports.viewer = function (Sreq,Sres) {
   keenClient.addEvent("regno",{"regno":regno,"keen": {
     timestamp: new Date().toISOString()
   }},function (err,result) {
-
+   console.log("keen log");
+      console.log(result);
   })
   if(friends.indexOf(regno)>-1){
     fs.createReadStream(__dirname+'/photos/'+regno+'.jpg').pipe(Sres)
