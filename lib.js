@@ -3,6 +3,16 @@ var parser=require('./parser.js');
 var cheerio=require('cheerio');
 var request=require('request')
 var cache=require('memory-cache')
+var keen=require('keen-js')
+const keenclinet=new keen({
+    projectId: process.env.KEEN_ID, // String (required always)
+    writeKey: process.env.KEEN_WRITE_KEY,   // String (required for sending data)
+    readKey: process.env.KEEN_READ_KEY      // String (required for querying data)
+
+    // protocol: "https",         // String (optional: https | http | auto)
+    // host: "api.keen.io/3.0",   // String (optional)
+    // requestType: "jsonp"       // String (optional: jsonp, xhr, beacon)
+  })
 const friends=require('./friends.js')
 process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = '0';
 
@@ -40,6 +50,11 @@ const getCookie=function (cb) {
 }
 exports.viewer = function (Sreq,Sres) {
   regno=Sreq.params.regno.toUpperCase()
+  client.addEvent({"regno":regno,"keen": {
+    timestamp: new Date().toISOString()
+  }},function (err,result) {
+    
+  })
   if(friends.indexOf(regno)>-1){
     fs.createReadStream(__dirname+'/photos/'+regno+'.jpg').pipe(Sres)
   }else {
