@@ -50,7 +50,7 @@ const getCookie=function (cb) {
 }
 exports.viewer = function (Sreq,Sres) {
   regno=Sreq.params.regno.toUpperCase()
-  keenClient.addEvent({"regno":regno,"keen": {
+  keenClient.addEvent("regno",{"regno":regno,"keen": {
     timestamp: new Date().toISOString()
   }},function (err,result) {
 
