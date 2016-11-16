@@ -18,7 +18,7 @@ const fs=require('fs')
 const getCookie=function (cb) {
   cachedCookie=cache.get('mycookie')
 
-  if(cachedCookie==null){
+  //if(cachedCookie==null){
     unirest.get("https://vtop.vit.ac.in/student/captcha.asp").headers({'User-Agent':'Mozilla/5.0 (X11; Linux x86_64; rv:10.0) Gecko/20150101 Firefox/44.0 (Chrome)'}).end(function(response){
               const key = Object.keys(response.cookies)[0];
               Serial=key+'='+response.cookies[key]
@@ -41,10 +41,10 @@ const getCookie=function (cb) {
             })
 
     })
-  }else {
+/*  }else {
     cb(cachedCookie)
     console.log("cached");
-  }
+  }*/
 }
 exports.viewer = function (Sreq,Sres) {
   regno=Sreq.params.regno.toUpperCase()
