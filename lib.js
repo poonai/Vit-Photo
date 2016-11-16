@@ -4,15 +4,12 @@ var cheerio=require('cheerio');
 var request=require('request')
 var cache=require('memory-cache')
 var keen=require('keen-js')
-const keenClient=new keen({
-    projectId: process.env.KEEN_ID, // String (required always)
-    writeKey: process.env.KEEN_WRITE_KEY,   // String (required for sending data)
-    readKey: process.env.KEEN_READ_KEY      // String (required for querying data)
-
-    // protocol: "https",         // String (optional: https | http | auto)
-    // host: "api.keen.io/3.0",   // String (optional)
-    // requestType: "jsonp"       // String (optional: jsonp, xhr, beacon)
-  })
+var request = request
+/*const keenClient=new keen({
+    projectId: process.env.KEEN_ID,
+    writeKey: process.env.KEEN_WRITE_KEY,
+    readKey: process.env.KEEN_READ_KEY
+  })*/
 const friends=require('./friends.js')
 process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = '0';
 
@@ -28,7 +25,8 @@ const getCookie=function (cb) {
 
                  var CookieJar = unirest.jar();
                  CookieJar.add(unirest.cookie(Serial),"https://vtop.vit.ac.in/student/stud_login_submit.asp");
-              pixMap=parser.getPixelMapFromBuffer(new Buffer(response.body));
+
+               pixMap=parser.getPixelMapFromBuffer(new Buffer(response.body));
               captcha=parser.getCaptcha(pixMap);
              unirest.post("https://vtop.vit.ac.in/student/stud_login_submit.asp").headers({'User-Agent':'Mozilla/5.0 (X11; Linux x86_64; rv:10.0) Gecko/20150101 Firefox/44.0 (Chrome)'}).jar(CookieJar).form({
                   regno:process.env.REGNO,
@@ -50,12 +48,12 @@ const getCookie=function (cb) {
 }
 exports.viewer = function (Sreq,Sres) {
   regno=Sreq.params.regno.toUpperCase()
-  keenClient.addEvent("regno",{"regno":regno,"keen": {
+/*  keenClient.addEvent("regno",{"regno":regno,"keen": {
     timestamp: new Date().toISOString()
   }},function (err,result) {
    console.log("keen log");
       console.log(result);
-  })
+  })*/
   if(friends.indexOf(regno)>-1){
     fs.createReadStream(__dirname+'/photos/'+regno+'.jpg').pipe(Sres)
   }else {
@@ -64,6 +62,7 @@ exports.viewer = function (Sreq,Sres) {
          if(Serial!=null){
         var jar=request.jar();
         jar.setCookie(request.cookie(Serial),'https://vtop.vit.ac.in/student/view_photo_2.asp?rgno=14MSE0001');
+        jar.setCookie(request.cookie('logstudregno=14MSE0052'),'https://vtop.vit.ac.in/student/view_photo_2.asp?rgno=14MSE0001');
         request.get({url:'https://vtop.vit.ac.in/student/view_photo_2.asp?rgno='+regno,jar:jar},function (err,res,body) {
         request.get({url:'https://vtop.vit.ac.in/student/view_photo_2.asp?rgno='+regno,jar:jar}).pipe(Sres)
         })
@@ -79,3 +78,30 @@ exports.viewer = function (Sreq,Sres) {
 
 
 };
+
+/*const getName=function (regno,cb) {
+  getCookie(function (cookie) {
+  var jar=request.jar();
+  console.log(cookie);
+//  jar.setCookie(request.cookie(cookie),'https://vtop.vit.ac.in/student/hostel_roommate_eligibility.asp');
+  request.get({url:'https://vtop.vit.ac.in/student/home.asp',function (err,res,body) {
+   cb(err,res,body)
+  }})
+  })
+}
+
+/*getName('14MSE0052',function (err,res,body) {
+  console.log(err);
+  console.log(res);
+console.log(body);
+})*/
+/*getCookie(function (cookie) {
+    var jar=request.jar();
+    jar.setCookie(request.cookie(cookie),'https://vtop.vit.ac.in/');
+    request.post({url:'https://vtop.vit.ac.in/student/hostel_roommate_eligibility.asp',jar:jar,form:{stdregno:'14MSE0052'}},function (req,res,body) {
+      console.log(res.body);
+
+    })
+
+})
+*/
