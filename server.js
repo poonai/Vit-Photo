@@ -1,6 +1,6 @@
 const express=require('express')
 const app=express()
-const viewer=require('./lib.js').viewer
+const getImage=require('./lib.js').getImage
 app.get('/',function (req,res,next) {
   res.json({
     status:true,
@@ -11,5 +11,18 @@ app.get('/',function (req,res,next) {
     example:'http://summaa.herokuapp.com/14MSE0052 replace the existing regno with your regno'
   })
 })
-app.get('/:regno',viewer)
+app.get('/:regno',(req, res, next) => {
+  getImage(req.params.regno,function (err,stream) {
+    if (err) {
+      res.json({
+        status: false,
+        description: 'something went wrong pls blame vtop server ;-)'
+      })
+
+    } else {
+      stream.pipe(res)
+    }
+  })
+
+})
 app.listen(process.env.PORT||2000)
