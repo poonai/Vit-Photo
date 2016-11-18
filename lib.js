@@ -24,8 +24,8 @@ const getLoginJar = (cb) => {
       request.post({
         url: 'https://vtop.vit.ac.in/student/stud_login_submit.asp',
         form: {
-          regno: '14MSE0052',
-          passwd: 'MyWife15Bitch_',
+          regno: process.env.REGNO,
+          passwd: process.env.PASS,
           vrfcd:captcha,
           message:""
         },
