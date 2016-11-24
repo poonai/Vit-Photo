@@ -68,3 +68,39 @@ exports.getImage = (regno, cb) => {
     })
   }
 }
+
+exports.getName = (regno, cb) => {
+  regno = regno.toUpperCase()
+  getLoginJar(function(err,jar){
+    if (err) {
+      cb(err, null)
+
+    } else {
+      request.get({
+        url: 'https://vtop.vit.ac.in/student/hostel_roommate_eligibility.asp',
+        jar: jar
+      }, (err, res, body) => {
+        request.get({
+          url: 'https://vtop.vit.ac.in/student/hostel_roommate_eligibility.asp',
+          jar: jar
+        }, (err, res, body) => {
+          request.post({
+            url: 'https://vtop.vit.ac.in/student/hostel_roommate_eligibility.asp',
+            jar: jar,
+            form : {
+              stdregno: regno
+            }
+          }, (err , res, body) => {
+            if (err) {
+              cb(err, null)
+            }else {
+              $=cheerio.load(res.body)
+              name = $('td').attr('colspan','2').eq(-2).text()
+              cb(null, name)
+            }
+          })
+        })
+      })
+    }
+  })
+}

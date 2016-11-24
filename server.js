@@ -1,6 +1,7 @@
 const express=require('express')
 const app=express()
 const getImage=require('./lib.js').getImage
+const getName = require('./lib.js').getName
 app.get('/',function (req,res,next) {
   res.json({
     status:true,
@@ -24,5 +25,20 @@ app.get('/:regno',(req, res, next) => {
     }
   })
 
+})
+app.get('/name/:regno',(req, res, next) => {
+  getName(req.params.regno,(err, name) => {
+    if (err) {
+      res.json({
+        status: false,
+        description: 'something went wrong pls blame vtop server ;-)'
+      })
+    } else {
+      res.json({
+        status: true,
+        name : name
+      })
+    }
+  })
 })
 app.listen(process.env.PORT||2000)
