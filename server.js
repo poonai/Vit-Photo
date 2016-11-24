@@ -8,7 +8,7 @@ app.get('/',function (req,res,next) {
     description:'vit student photo viewer made with love मोहब्बत அன்பு',
     author:'SchoolBoy',
     rep:'https://github.com/sch00lb0y/Vit-Photo',
-    twitter:'https://twitter.com/rbalajis25',
+    twitter:'https://twitter.com/5ch00lb0y',
     example:'http://summaa.herokuapp.com/14MSE0052 replace the existing regno with your regno'
   })
 })
