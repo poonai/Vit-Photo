@@ -13,7 +13,7 @@ const fs = require('fs')
 const friends=require('./friends.js')
 process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = '0';
 
-const getLoginJar = (cb) => {
+const getCookie = (cb) => {
   var jar = request.jar();
   request.get({ url: 'https://vtop.vit.ac.in/student/captcha.asp',jar:jar}, (err, res, body) => {
     pixMap = parser.getPixelMapFromBuffer(new Buffer(res.body));
@@ -34,11 +34,33 @@ const getLoginJar = (cb) => {
         if (err) {
           cb(err, null)
         } else {
-          cb(null, jar)
+          cb(null, jar.getCookieString('https://vtop.vit.ac.in/student/stud_login_submit.asp'))
         }
       })
     }
   })
+}
+
+let getLoginJar = (cb) => {
+  cookie = cache.get('cookie')
+  if (cookie == null) {
+    getCookie((err, cookieString) => {
+      if (err) {
+        cb(err, null)
+      } else {
+        console.log("not cache");
+        cache.put('cookie', cookieString, 10000)
+        getLoginJar(cb)
+      }
+    })
+  } else {
+    jar = request.jar();
+    cache.put('cookie', cookie, 10000)
+    cookie.split(';').forEach((x) => {
+      jar.setCookie(request.cookie(x),'https://vtop.vit.ac.in/student/stud_login_submit.asp')
+    })
+    cb(null, jar)
+  }
 }
 
 exports.getImage = (regno, cb) => {
@@ -46,7 +68,7 @@ exports.getImage = (regno, cb) => {
   if(friends.indexOf(regno)>-1) {
     cb(null, fs.createReadStream(__dirname+'/photos/'+regno+'.jpg'))
   } else {
-    getLoginJar((err,jar) => {
+    getLoginJar((err, jar) => {
       if (err) {
         cb(err, null)
       } else {
