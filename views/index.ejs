@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+  </head>
+  <body>
+    <center><img width=300 src="/image/<%=regno%>" alt="" /><center>
+    <center><h1 id="name"></h1></center>
+    <script type="text/javascript">
+    fetch('/name/<%=regno%>',{
+      method: 'GET'
+    }).then((res) => {
+      return res.json()
+    }).then((data) => {
+      document.getElementById("name").innerHTML = data.name
+    })
+    </script>
+  </body>
+</html>

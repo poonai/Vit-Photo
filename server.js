@@ -2,6 +2,9 @@ const express=require('express')
 const app=express()
 const getImage=require('./lib.js').getImage
 const getName = require('./lib.js').getName
+
+app.set('view engine', 'ejs')
+
 app.get('/',function (req,res,next) {
   res.json({
     status:true,
@@ -12,20 +15,27 @@ app.get('/',function (req,res,next) {
     example:'http://summaa.herokuapp.com/14MSE0052 replace the existing regno with your regno'
   })
 })
-app.get('/:regno',(req, res, next) => {
+
+app.get('/:regno', (req, res, next) => {
+  regno = req.params.regno.toUpperCase()
+  res.render('index',{
+    regno: regno
+  })
+})
+
+app.get('/image/:regno',(req, res, next) => {
   getImage(req.params.regno,function (err,stream) {
     if (err) {
       res.json({
         status: false,
         description: 'something went wrong pls blame vtop server ;-)'
       })
-
     } else {
       stream.pipe(res)
     }
   })
-
 })
+
 app.get('/name/:regno',(req, res, next) => {
   getName(req.params.regno,(err, name) => {
     if (err) {
@@ -41,4 +51,5 @@ app.get('/name/:regno',(req, res, next) => {
     }
   })
 })
+
 app.listen(process.env.PORT||2000)
