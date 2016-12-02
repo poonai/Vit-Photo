@@ -5,4 +5,4 @@ hosted at (http://summaa.herokuapp.com/)
 example : http://summaa.herokuapp.com/14mse0001       
 made with love मोहब्बत அன்பு
 # Contributor
-- [Balaji](https://github.com/sch00lb0y)
+- [பாலாஜி](https://github.com/sch00lb0y)
